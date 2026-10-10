@@ -6,7 +6,7 @@ Append a machine-local time footer to each completed OpenCode text block. The la
 
 ## Installation
 
-Once the package is published, add it to the `plugin` array in `opencode.json`:
+Requires an OpenCode build that supports the `experimental.text.complete` plugin hook. Add it to the `plugin` array in your `opencode.json` — the global config at `~/.config/opencode/opencode.json`, or a project-local one:
 
 ```json
 {
@@ -15,7 +15,7 @@ Once the package is published, add it to the `plugin` array in `opencode.json`:
 }
 ```
 
-The default label is `Finalizado a las`, preserving the existing local plugin output. To use an English label, pass an options tuple:
+The default label is `Finalizado a las` (Spanish). To use any other text, for example English, pass an options tuple:
 
 ```json
 {
