@@ -1,5 +1,5 @@
 import { afterEach, expect, setSystemTime, test } from "bun:test"
-import type { PluginInput } from "@opencode-ai/plugin"
+import type { PluginInput, PluginOptions } from "@opencode-ai/plugin"
 import * as module from "./index.ts"
 
 const originalTZ = process.env.TZ
@@ -9,8 +9,8 @@ afterEach(() => {
   else process.env.TZ = originalTZ
 })
 
-async function complete(text: string, partID = "part-1") {
-  const hooks = await module.default({} as PluginInput)
+async function complete(text: string, partID = "part-1", options?: PluginOptions) {
+  const hooks = await module.default({} as PluginInput, options)
   expect(hooks["experimental.text.complete"]).toBeFunction()
   const output = { text }
   await hooks["experimental.text.complete"]!({ sessionID: "session-1", messageID: "message-1", partID }, output)
@@ -67,6 +67,46 @@ test("does not mistake a footer quoted earlier in the text for a trailing footer
   freezeClock()
   const text = "Example: [Finalizado a las 12:34:56]\nMore text"
   expect(await complete(text)).toBe(`${text}\n\n[Finalizado a las 03:04:05]`)
+})
+
+test("uses a custom label from the plugin's second argument", async () => {
+  freezeClock()
+  expect(await complete("Answer", "part-1", { label: "Finished at" })).toBe(
+    "Answer\n\n[Finished at 03:04:05]",
+  )
+})
+
+test.each([undefined, null, 42, false, "", " \n\t "])("falls back for an invalid label: %j", async (label) => {
+  freezeClock()
+  expect(await complete("Answer", "part-1", { label })).toBe("Answer\n\n[Finalizado a las 03:04:05]")
+})
+
+test("keeps the default unchanged when the options object is empty", async () => {
+  freezeClock()
+  expect(await complete("Answer", "part-1", {})).toBe("Answer\n\n[Finalizado a las 03:04:05]")
+})
+
+test("custom labels with regex characters remain idempotent", async () => {
+  freezeClock()
+  const options = { label: "Finished [at] (local).*+?^$|\\{time}" }
+  const text = await complete("Answer", "part-1", options)
+  expect(text).toBe(`Answer\n\n[${options.label} 03:04:05]`)
+  setSystemTime(new Date("2026-01-15T09:05:06Z"))
+  expect(await complete(`${text}\n `, "part-1", options)).toBe(`${text}\n `)
+})
+
+test("does not treat regex metacharacters in the label as wildcards", async () => {
+  freezeClock()
+  const text = "Answer\n\n[FinishedXat 12:34:56]"
+  expect(await complete(text, "part-1", { label: "Finished.at" })).toBe(
+    `${text}\n\n[Finished.at 03:04:05]`,
+  )
+})
+
+test("only recognizes the configured label as an existing footer", async () => {
+  freezeClock()
+  const text = "Answer\n\n[Finalizado a las 12:34:56]"
+  expect(await complete(text, "part-1", { label: "Finished at" })).toBe(`${text}\n\n[Finished at 03:04:05]`)
 })
 
 test("exports one plugin and has no event logger or filesystem dependency", async () => {

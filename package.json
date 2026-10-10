@@ -1,7 +1,5 @@
 {
   "name": "opencode-plugins",
   "private": true,
-  "devDependencies": {
-    "@opencode-ai/plugin": "1.18.16"
-  }
+  "workspaces": ["timeline"]
 }

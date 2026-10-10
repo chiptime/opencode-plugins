@@ -1,0 +1,44 @@
+{
+  "name": "opencode-time-footer",
+  "version": "0.1.0",
+  "description": "Append a machine-local completion-time footer to OpenCode text blocks.",
+  "type": "module",
+  "license": "MIT",
+  "author": "ChipTime",
+  "keywords": ["opencode", "opencode-plugin", "plugin"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chiptime/opencode-plugins.git",
+    "directory": "timeline"
+  },
+  "homepage": "https://github.com/chiptime/opencode-plugins/tree/master/timeline#readme",
+  "bugs": {
+    "url": "https://github.com/chiptime/opencode-plugins/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": ["dist", "README.md", "LICENSE", "index.ts"],
+  "exports": {
+    ".": {
+      "types": "./index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "bun build index.ts --outdir dist --target bun --external @opencode-ai/plugin",
+    "test": "bun test timeline.test.ts",
+    "prepublishOnly": "bun run test && bun run build"
+  },
+  "peerDependencies": {
+    "@opencode-ai/plugin": ">=1.18.16"
+  },
+  "peerDependenciesMeta": {
+    "@opencode-ai/plugin": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@opencode-ai/plugin": "1.18.16"
+  }
+}

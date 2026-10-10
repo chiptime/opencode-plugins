@@ -4,9 +4,19 @@
   "workspaces": {
     "": {
       "name": "opencode-plugins",
+    },
+    "timeline": {
+      "name": "opencode-time-footer",
+      "version": "0.1.0",
       "devDependencies": {
         "@opencode-ai/plugin": "1.18.16",
       },
+      "peerDependencies": {
+        "@opencode-ai/plugin": ">=1.18.16",
+      },
+      "optionalPeers": [
+        "@opencode-ai/plugin",
+      ],
     },
   },
   "packages": {
@@ -55,6 +65,8 @@
     "multipasta": ["multipasta@0.2.8", "", {}, "sha512-ZPWuMKyv0cSO29f7hozp+k6+crZbQijV8ipMvxNxRf2SwtYGTX1ZX89Kd20VV4H9Znonx+EQn+iy1wGQsJ+b+Q=="],
 
     "node-gyp-build-optional-packages": ["node-gyp-build-optional-packages@5.2.2", "", { "dependencies": { "detect-libc": "^2.0.1" }, "bin": { "node-gyp-build-optional-packages": "bin.js", "node-gyp-build-optional-packages-optional": "optional.js", "node-gyp-build-optional-packages-test": "build-test.js" } }, "sha512-s+w+rBWnpTMwSFbaE0UXsRlg7hU4FjekKU4eyAih5T8nJuNZT1nNsskXpxmeqSK9UzkBl6UgRlnKc8hz8IEqOw=="],
+
+    "opencode-time-footer": ["opencode-time-footer@workspace:timeline"],
 
     "path-key": ["path-key@3.1.1", "", {}, "sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q=="],
 
