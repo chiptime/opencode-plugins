@@ -7,7 +7,7 @@
     },
     "timeline": {
       "name": "opencode-time-footer",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "devDependencies": {
         "@opencode-ai/plugin": "1.18.16",
       },

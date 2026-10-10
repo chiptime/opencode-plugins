@@ -1,6 +1,6 @@
 {
   "name": "opencode-time-footer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Append a machine-local completion-time footer to OpenCode text blocks.",
   "type": "module",
   "license": "MIT",
